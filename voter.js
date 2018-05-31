@@ -12,18 +12,17 @@ const dbp = db.open('./activity.sqlite', { Promise });
 var prefix = "-";
 
 const TIME_BETWEEN_PAYOUTS = 30;
-const AUTH_TOKEN = "NDMwMTY2ODQ0ODI1OTI3Njgw.De5ewQ.jB1ZdUXbgBV3SEtZ1lnhDcD-UCo";
+const AUTH_TOKEN = "<AUTH TOKEN>"; //CHANGE THIS
 const GUILD_ID = "386661754341687298";
-//const GUILD_ID = "172177489660084224";
 const AFK_CHANNEL_ID = "386661754840678413";
 const ELECTION_MANAGER = "115659366337740809";
 const FREE_VOTE = "430166844825927680";
 const BALLOT_CHANNEL = "430233443406708746"
 const MIN_USERS_IN_CHANNEL = 2;
-const genesis = moment("05/11/18", "MMDDYY");
-const exodus = moment("05/13/18", "MMDDYY");
-const seatNames = ["seat_one","seat_three","seat_two"];
-const seatNumbers = ["1","3","2"];
+const genesis = moment("05/11/18", "MMDDYY"); //First seat reelection date
+const exodus = moment("05/13/18", "MMDDYY"); //End of first seat reelection
+const seatNames = ["seat_one","seat_three","seat_two"]; //Put the order elections run in here.
+const seatNumbers = ["1","3","2"]; //Short form of above.
 const electionScript = `
 @here
 **Seat %X Elections: (Re-elected on %R)**
@@ -35,8 +34,8 @@ Elections end at 12:00 PM CST %E
 *If eligible, run !declare <emoji> to run*
 %N
 `
-var requiredMessages = 75;
-var requiredMinutes = (6*60);
+var requiredMessages = 75; //Messages required to be eligible
+var requiredMinutes = (6*60); //Minuted required to be eligible
 var masterGuild;
 var paused = 0;
 

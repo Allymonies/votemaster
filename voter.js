@@ -70,7 +70,7 @@ commands = {
 				msg.reply("<@" + target.id + "> is ineligible for voting.\nThey have " + userMinutes.toString() + " minutes in voice, and " + userMessages.toString() + " messages.");
 			}
 		}).catch(err => {
-			console.trace("PROMISE REJECTION REEEEE.");
+			console.trace("Error: Promise Rejection.");
 		});
 	},
 	clear: function (msg, args) {
@@ -93,7 +93,7 @@ commands = {
 				msg.reply("Pause status: " + paused.toString());
 				console.log("Pause status: " + paused.toString());
 			}).catch(err => {
-				console.trace("PROMISE REJECTION REEEEE.");
+				console.trace("Error: Promise Rejection.");
 			});
 		} else {
 			msg.reply("You are not the election manager.");
@@ -137,7 +137,7 @@ commands = {
 						}
 						db.get('SELECT * FROM elections WHERE user_id = ?', target.id).then((result_c) => {
 							if (result_c) {
-								msg.reply("You are already a congressman!");
+								msg.reply("You are already a congressperson!");
 								return;
 							}
 							var daysSince = Math.abs(genesis.diff(moment().startOf('day'),"days")) % 42;
@@ -150,26 +150,26 @@ commands = {
 									db.run("INSERT INTO nominees (user_id, emoji_id) VALUES (?, ?)", target.id, emoji);
 									msg.reply("Your declaration has been registered.");
 								}).catch(err => {
-									console.trace("PROMISE REJECTION REEEEE.");
+									console.trace("Error: Promise Rejection.");
 								});
 							}).catch(err => {
-								console.trace("PROMISE REJECTION REEEEE.");
+								console.trace("Error: Promise Rejection.");
 							});
 						}).catch(err => {
-							console.trace("PROMISE REJECTION REEEEE.");
+							console.trace("Error: Promise Rejection.");
 						});
 					}).catch(err => {
-						console.trace("PROMISE REJECTION REEEEE.");
+						console.trace("Error: Promise Rejection.");
 					});
 				} else {
 					msg.reply("You are not eligible to run for congress.");
 					return;
 				}
 			}).catch(err => {
-				console.trace("PROMISE REJECTION REEEEE.");
+				console.trace("Error: Promise Rejection.");
 			});
 		}).catch(err => {
-			console.trace("PROMISE REJECTION REEEEE.");
+			console.trace("Error: Promise Rejection.");
 		});
 	}
 }
@@ -181,7 +181,7 @@ client.on('ready', () => {
 		paused = result.flag;
 		console.log("Pause status: " + paused.toString());
 	}).catch(err => {
-		console.trace("PROMISE REJECTION REEEEE.");
+		console.trace("Error: Promise Rejection.");
 	});
 	masterGuild.channels.find("id",BALLOT_CHANNEL).messages.fetch({ limit: 50 });
 });
@@ -194,14 +194,14 @@ function trackMinutes(id, result) {
 	} else { 
 		console.log(id + " could not be found, creating");
 		db.run("INSERT INTO users (id, last_message, messages, minutes) VALUES (?, 0, 0, 0)",id).catch(err => {
-		console.trace("PROMISE REJECTION REEEEE.");
+		console.trace("Error: Promise Rejection.");
 		});
 		var minutes = 0;
 	}
 	if (!paused) {
 		minutes += 1;
 		db.run("UPDATE users SET minutes = ? WHERE id = ?", minutes, id).catch(err => {
-		console.trace("PROMISE REJECTION REEEEE." + err);
+		console.trace("Error: Promise Rejection.");
 		});
 	}
 }
@@ -232,7 +232,7 @@ client.on('message', msg => {
 				}
 			}
 		}).catch(err => {
-			console.trace("PROMISE REJECTION REEEEE.");
+			console.trace("Error: Promise Rejection.");
 		});
 		//console.log((msg.member && msg.member.nickname ? msg.member.nickname : msg.author.username) + ": " + msg.content);
 	} else {
@@ -262,7 +262,7 @@ client.on('messageReactionAdd', (messageReaction, user) => {
 				return false
 			}
 		}).catch(err => {
-			console.trace("PROMISE REJECTION REEEEE.");
+			console.trace("Error: Promise Rejection.");
 		});
 	}
 });
@@ -289,7 +289,7 @@ setInterval(function() {
 		var arg = voiceStates[i];
 		if (arg.channel_id != null && arg.channel_id != AFK_CHANNEL_ID && channels[arg.channel_id] >= MIN_USERS_IN_CHANNEL) {
 			db.get('SELECT * FROM users WHERE id = ?', arg.user_id).then(trackMinutes.bind(null, arg.user_id)).catch(err => {
-				console.trace("PROMISE REJECTION REEEEE.");
+				console.trace("Error: Promise Rejection.");
 			});/*)(result) => {
 				if (result) {
 					console.log(result.id + " has " + result.minutes.toString() + " minutes.");
@@ -373,7 +373,7 @@ var endElections = new CronJob({
 			db.run("UPDATE self SET flag = ? WHERE field = ?", 0, "election_active");
 			db.run("UPDATE self SET flag = ? WHERE field = ?", 0, "paused");
 		}).catch(err => {
-			console.trace("PROMISE REJECTION REEEEE.");
+			console.trace("Error: Promise Rejection.");
 		});
 	},
 	start: false,
